@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth101/widgets/customized_button.dart';
 import 'package:flutter/material.dart';
 
@@ -11,8 +12,9 @@ class ForgotPassword extends StatefulWidget {
 }
 
 class _ForgotPasswordState extends State<ForgotPassword> {
-  final TextEditingController _emailController = TextEditingController();
-
+  //final TextEditingController _emailController = TextEditingController();
+  late String _email;
+  final auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -57,26 +59,53 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     // fontWeight: FontWeight.bold,
                   )),
             ),
-            CustomizedTextfield(
-              myController: _emailController,
-              hintText: "Enter your Email",
-              isPassword: false,
-            ),
-            CustomizedButton(
-              buttonText: "Send Code",
-              buttonColor: Colors.black,
-              textColor: Colors.white,
-              onPressed: () {
-                Navigator.pop(context);
+            // CustomizedTextfield(
+            //   myController: _emailController,
+            //   hintText: "Enter your Email",
+            //   isPassword: false,
+            // ),
+            // CustomizedButton(
+            //   buttonText: "Send Code",
+            //   buttonColor: Colors.black,
+            //   textColor: Colors.white,
+            //   onPressed: () {
+            //     auth.sendPasswordResetEmail(email: _emailController);
+            //   },
+            // ),
+
+            TextField(
+              keyboardType: TextInputType.emailAddress,
+              decoration: InputDecoration(
+                hintText: ('Enter your email'),
+                hintStyle: TextStyle(
+                  fontSize: 20,
+                ),
+                hintTextDirection: TextDirection.ltr,
+              ),
+              onChanged: (value){
+                setState(() {
+                  _email = value;
+                });
               },
             ),
+
+             CustomizedButton(
+               buttonColor: Colors.black,
+              buttonText: 'Send Code',
+              textColor: Colors.white,
+              onPressed: () {
+                auth.sendPasswordResetEmail(email: _email);
+                Navigator.of(context).pop();
+              },
+            ),
+
             const Spacer(
               flex: 1,
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(68, 8, 8, 8.0),
               child: Row(
-                // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text("Remember Password?",
                       style: TextStyle(

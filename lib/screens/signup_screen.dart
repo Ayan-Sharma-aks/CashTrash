@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth101/services/firebase_auth_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../widgets/customized_button.dart';
@@ -109,13 +110,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
                           height: 1,
                           width: MediaQuery.of(context).size.height * 0.15,
                           color: Colors.grey,
                         ),
-                        const Text("  Or Register with "),
+                        const Text("  OR  "),
                         Container(
                           height: 1,
                           width: MediaQuery.of(context).size.height * 0.16,
@@ -129,71 +131,95 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Container(
-                            height: 50,
-                            width: 100,
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.black, width: 1),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: IconButton(
-                              icon: const Icon(
-                                FontAwesomeIcons.facebookF,
-                                color: Colors.blue,
-                              ),
-                              onPressed: () {},
-                            )),
+                        // Container(
+                        //     height: 50,
+                        //     width: 100,
+                        //     decoration: BoxDecoration(
+                        //       border: Border.all(color: Colors.black, width: 1),
+                        //       borderRadius: BorderRadius.circular(10),
+                        //     ),
+                        //     child: IconButton(
+                        //       icon: const Icon(
+                        //         FontAwesomeIcons.facebookF,
+                        //         color: Colors.blue,
+                        //       ),
+                        //       onPressed: () {},
+                        //     )),
                         Container(
                           height: 50,
-                          width: 100,
+                          //width: 60,
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.black, width: 1),
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: IconButton(
-                            icon: const Icon(
-                              FontAwesomeIcons.google,
-                              // color: Colors.blue,
+                          child: OutlinedButton(
+
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Image.asset('assets/google.png',width: 50,height: 50,),
+                                Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Center(
+                                    child: Text(
+                                      'CONTINUE WITH GOOGLE',
+                                      style: TextStyle(
+                                        fontSize: 14.0,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.green,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                             onPressed: () async {
-                              await FirebaseAuthService().logininwithgoogle();
+                              try{
+                                await FirebaseAuthService().logininwithgoogle();
 
-                              if (FirebaseAuth.instance.currentUser != null) {
-                                if (!mounted) return;
+                                if (FirebaseAuth.instance.currentUser != null) {
+                                  if (!mounted) return;
 
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => const HomeScreen()));
-                              } else {
-                                throw Exception("Error");
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => const HomeScreen()));
+                                } else {
+                                  throw Exception("Error");
+                                }
                               }
+                              on PlatformException catch(_){
+                                print("Exception");
+                                rethrow;
+                              }
+
                             },
                           ),
                         ),
-                        Container(
-                            height: 50,
-                            width: 100,
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.black, width: 1),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: IconButton(
-                              icon: const Icon(
-                                FontAwesomeIcons.apple,
-                                // color: Colors.blue,
-                              ),
-                              onPressed: () {},
-                            ))
+                        // Container(
+                        //     height: 50,
+                        //     width: 100,
+                        //     decoration: BoxDecoration(
+                        //       border: Border.all(color: Colors.black, width: 1),
+                        //       borderRadius: BorderRadius.circular(10),
+                        //     ),
+                        //     child: IconButton(
+                        //       icon: const Icon(
+                        //         FontAwesomeIcons.apple,
+                        //         // color: Colors.blue,
+                        //       ),
+                        //       onPressed: () {},
+                        //     ))
                       ],
                     ),
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
+                  // const SizedBox(
+                  //   height: 10,
+                  // ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(48, 8, 8, 8.0),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         const Text("Already have an account?",
