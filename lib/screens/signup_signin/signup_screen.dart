@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth101/providers/signup_auth_provider.dart';
 import 'package:firebase_auth101/services/firebase_auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 import '../../widgets/customized_button.dart';
 import '../../widgets/customized_textfield.dart';
@@ -15,14 +17,19 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  // Controllers
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
   final TextEditingController _phonenumberController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    SignUpAuthProvider signupAuthProvider =
+        Provider.of<SignUpAuthProvider>(context);
+
     return SafeArea(
       child: Scaffold(
           body: SizedBox(
@@ -63,11 +70,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 isPassword: false,
               ),
               CustomizedTextfield(
-                myController: _phonenumberController,
-                hintText: "Mobile Number",
-                isPassword: false,
-              ),
-              CustomizedTextfield(
                 myController: _emailController,
                 hintText: "Email",
                 isPassword: false,
@@ -82,42 +84,62 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 hintText: "Confirm Password",
                 isPassword: true,
               ),
-              CustomizedButton(
-                buttonText: "Register",
-                buttonColor: Colors.green.shade900,
-                textColor: Colors.white,
-                onPressed: () async {
-                  try {
-                    await FirebaseAuthService()
-                        .signup(_emailController.text.trim(),
-                            _passwordController.text.trim())
-                        .then((value) => AlertDialog(
-                              title: const Text('Registered Successfully'),
-                              actions: [
-                                ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.green[400]),
-                                    child: const Text('OK'))
-                              ],
-                            ));
-
-                    if (!mounted) return;
-
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const LoginScreen()));
-                  } on FirebaseException catch (e) {
-                    debugPrint(e.message);
-                  }
-
-                  // Navigator.push(context,
-                  //     MaterialPageRoute(builder: (_) => const LoginScreen()));
-                },
+              CustomizedTextfield(
+                myController: _phonenumberController,
+                hintText: "Mobile Number",
+                isPassword: false,
               ),
+              SignUpAuthProvider.loading
+                  ? const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : CustomizedButton(
+                      buttonText: "Register",
+                      buttonColor: Colors.green.shade900,
+                      textColor: Colors.white,
+                      onPressed: () {
+                        signupAuthProvider.signupValidation(
+                            name: _usernameController,
+                            email: _emailController,
+                            password: _passwordController,
+                            confirmPass: _confirmPasswordController,
+                            phone: _phonenumberController,
+                            context: context);
+                      },
+
+                      // ORIGINAL
+                      // onPressed: () async {
+                      //   try {
+                      //     await FirebaseAuthService()
+                      //         .signup(_emailController.text.trim(),
+                      //             _passwordController.text.trim())
+                      //         .then((value) => AlertDialog(
+                      //               title: const Text('Registered Successfully'),
+                      //               actions: [
+                      //                 ElevatedButton(
+                      //                     onPressed: () {
+                      //                       Navigator.pop(context);
+                      //                     },
+                      //                     style: ElevatedButton.styleFrom(
+                      //                         backgroundColor: Colors.green[400]),
+                      //                     child: const Text('OK'))
+                      //               ],
+                      //             ));
+
+                      //     if (!mounted) return;
+
+                      //     Navigator.push(
+                      //         context,
+                      //         MaterialPageRoute(
+                      //             builder: (context) => const LoginScreen()));
+                      //   } on FirebaseException catch (e) {
+                      //     debugPrint(e.message);
+                      //   }
+
+                      //   // Navigator.push(context,
+                      //   //     MaterialPageRoute(builder: (_) => const LoginScreen()));
+                      // },
+                    ),
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Row(
