@@ -1,8 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_auth101/widgets/customized_button.dart';
 import 'package:flutter/material.dart';
 
-import '../widgets/customized_textfield.dart';
+import '../../widgets/customized_button.dart';
 
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({Key? key}) : super(key: key);
@@ -19,7 +18,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      body: SizedBox (
+      body: SizedBox(
         height: MediaQuery.of(context).size.height,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,7 +49,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   )),
             ),
             const Padding(
-              padding:  EdgeInsets.all(8.0),
+              padding: EdgeInsets.all(8.0),
               child: Text(
                   "Dont worry it occurs to us all. We will send you a link to reset your password.",
                   style: TextStyle(
@@ -75,22 +74,22 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
             TextField(
               keyboardType: TextInputType.emailAddress,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: ('Enter your email'),
                 hintStyle: TextStyle(
                   fontSize: 20,
                 ),
                 hintTextDirection: TextDirection.ltr,
               ),
-              onChanged: (value){
+              onChanged: (value) {
                 setState(() {
                   _email = value;
                 });
               },
             ),
 
-             CustomizedButton(
-               buttonColor: Colors.black,
+            CustomizedButton(
+              buttonColor: Colors.black,
               buttonText: 'Send Code',
               textColor: Colors.white,
               onPressed: () {
@@ -102,27 +101,29 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             const Spacer(
               flex: 1,
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(68, 8, 8, 8.0),
-              child: Row(
-                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text("Remember Password?",
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text("Remember Password?",
+                    style: TextStyle(
+                      color: Color(0xff1E232C),
+                      fontSize: 15,
+                    )),
+                InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text("  Login",
                       style: TextStyle(
-                        color: Color(0xff1E232C),
+                        color: Color(0xff35C2C1),
                         fontSize: 15,
                       )),
-                  InkWell(
-                    onTap: () {},
-                    child: const Text("  Login",
-                        style: TextStyle(
-                          color: Color(0xff35C2C1),
-                          fontSize: 15,
-                        )),
-                  ),
-                ],
-              ),
-            )
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 30,
+            ),
           ],
         ),
       ),
