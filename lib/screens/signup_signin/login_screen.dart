@@ -1,4 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth101/providers/login_auth_provider.dart';
+import 'package:provider/provider.dart';
 import '../../widgets/customized_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,6 +21,9 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    LoginAuthProvider loginAuthProvider =
+        Provider.of<LoginAuthProvider>(context);
+
     return SafeArea(
       child: Scaffold(
           body: SizedBox(
@@ -84,59 +89,71 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
 
               // Login Button
-              CustomizedButton(
-                buttonText: "Login",
-                buttonColor: Colors.green[800],
-                textColor: Colors.white,
-                onPressed: () async {
-                  //  The else part is not working in the video because we have
-                  //  enclosed it in the try catch block. Once we have error in
-                  // login the firebase exception is thrown and the codeblock after that
-                  // error is skiped and code of catch block is executed.
-                  // if we want our else part to be executed we need to get rid from
-                  // this try catch or add that code in catch block.
+              loginAuthProvider.loading
+                  ? const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : CustomizedButton(
+                      buttonText: "Login",
+                      buttonColor: Colors.green[800],
+                      textColor: Colors.white,
+                      onPressed: () {
+                        loginAuthProvider.loginValidation(
+                          email: _emailController,
+                          password: _passwordController,
+                          context: context,
+                        );
+                      },
 
-                  try {
-                    await FirebaseAuthService().login(
-                        _emailController.text.trim(),
-                        _passwordController.text.trim());
-                    if (FirebaseAuth.instance.currentUser != null) {
-                      if (!mounted) return;
-                      Navigator.pushNamed(context, '/dashboard');
-                    }
-                  } on FirebaseException catch (e) {
-                    debugPrint("error is ${e.message}");
+                      // onPressed: () async {
+                      //   //  The else part is not working in the video because we have
+                      //   //  enclosed it in the try catch block. Once we have error in
+                      //   // login the firebase exception is thrown and the codeblock after that
+                      //   // error is skiped and code of catch block is executed.
+                      //   // if we want our else part to be executed we need to get rid from
+                      //   // this try catch or add that code in catch block.
 
-                    showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                                title: const Text(
-                                  "Invalid Username or Password",
-                                ),
-                                content: const Text(
-                                  'Please make sure that username and password is correct',
-                                ),
-                                actions: [
-                                  Center(
-                                    child: ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.green[800]),
-                                      child: const Text('OK'),
-                                    ),
-                                  )
-                                ]));
-                  }
+                      //   try {
+                      //     await FirebaseAuthService().login(
+                      //         _emailController.text.trim(),
+                      //         _passwordController.text.trim());
+                      //     if (FirebaseAuth.instance.currentUser != null) {
+                      //       if (!mounted) return;
+                      //       Navigator.pushNamed(context, '/dashboard');
+                      //     }
+                      //   } on FirebaseException catch (e) {
+                      //     debugPrint("error is ${e.message}");
 
-                  // Navigator.push(context,
-                  //     MaterialPageRoute(builder: (_) => const LoginScreen()));
-                },
-              ),
+                      //     showDialog(
+                      //         context: context,
+                      //         builder: (context) => AlertDialog(
+                      //                 shape: RoundedRectangleBorder(
+                      //                   borderRadius: BorderRadius.circular(16),
+                      //                 ),
+                      //                 title: const Text(
+                      //                   "Invalid Username or Password",
+                      //                 ),
+                      //                 content: const Text(
+                      //                   'Please make sure that username and password is correct',
+                      //                 ),
+                      //                 actions: [
+                      //                   Center(
+                      //                     child: ElevatedButton(
+                      //                       onPressed: () {
+                      //                         Navigator.pop(context);
+                      //                       },
+                      //                       style: ElevatedButton.styleFrom(
+                      //                           backgroundColor: Colors.green[800]),
+                      //                       child: const Text('OK'),
+                      //                     ),
+                      //                   )
+                      //                 ]));
+                      //   }
+
+                      //   // Navigator.push(context,
+                      //   //     MaterialPageRoute(builder: (_) => const LoginScreen()));
+                      // },
+                    ),
               const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

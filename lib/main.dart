@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
+import 'providers/login_auth_provider.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -24,7 +26,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => SignUpAuthProvider())
+        ChangeNotifierProvider(
+          create: (context) => SignUpAuthProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => LoginAuthProvider(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
