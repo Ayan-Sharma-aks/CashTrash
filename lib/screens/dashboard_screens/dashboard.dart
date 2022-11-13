@@ -1,3 +1,4 @@
+import 'package:firebase_auth101/widgets/check_pincode.dart';
 import 'package:flutter/material.dart';
 
 import './history.dart';
@@ -20,7 +21,7 @@ class _DashboardState extends State<Dashboard> {
   List<Widget> dashboardScreens = [
     const HomeScreen(),
     const PriceList(),
-    const PickUpRequest(),
+    CheckPincode(),
     const PickUpHistory(),
   ];
 
@@ -39,34 +40,44 @@ class _DashboardState extends State<Dashboard> {
         title: Text(titles[_currentIndex]),
       ),
       drawer: MyDrawer(),
-      body: dashboardScreens.elementAt(_currentIndex),
+      body: dashboardScreens[_currentIndex],
+      // body: Check(
+      //   currentindex: _currentIndex,
+      //   dashboardscreens: dashboardScreens,
+      // ),
       bottomNavigationBar: BottomNavigationBar(
         selectedFontSize: 16,
         iconSize: 26,
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.green[900],
         currentIndex: _currentIndex,
-        onTap: (index) => setState(() {
-          _currentIndex = index;
-        }),
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
+            tooltip: 'Home',
             label: 'Home',
             backgroundColor: Colors.green,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.currency_rupee),
+            tooltip: 'Price',
             label: 'Price',
             backgroundColor: Colors.green,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.delivery_dining),
+            tooltip: 'Request Pickup',
             label: 'Request',
             backgroundColor: Colors.green,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.history),
+            tooltip: 'History',
             label: 'History',
             backgroundColor: Colors.green,
           ),
@@ -75,3 +86,25 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 }
+
+// class Check extends StatefulWidget {
+//   int currentindex;
+//   List<Widget> dashboardscreens;
+
+//   Check(
+//       {required this.currentindex, required this.dashboardscreens, super.key});
+
+//   @override
+//   State<Check> createState() => _CheckState();
+// }
+
+// class _CheckState extends State<Check> {
+//   @override
+//   Widget build(BuildContext context) {
+//     if (widget.currentindex != 2) {
+//       return PickUpRequest();
+//     } else {
+//       return widget.dashboardscreens.elementAt(widget.currentindex);
+//     }
+//   }
+// }
