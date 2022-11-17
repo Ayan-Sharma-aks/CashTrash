@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth101/firebase_options.dart';
+import 'package:firebase_auth101/providers/order_provider.dart';
 import 'package:firebase_auth101/providers/signup_auth_provider.dart';
 import 'package:firebase_auth101/screens/dashboard_screens/dashboard.dart';
 import 'package:firebase_auth101/screens/dashboard_screens/pickup_req.dart';
@@ -27,6 +28,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(
+          create: (context) => OrderProvider(),
+        ),
         ChangeNotifierProvider(
           create: (context) => SignUpAuthProvider(),
         ),

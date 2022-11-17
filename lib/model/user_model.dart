@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -7,22 +9,24 @@ class UserModel {
   final String email;
   final String password;
   final String phone;
+  final HashMap order;
   UserModel({
     required this.uid,
     required this.name,
     required this.email,
     required this.password,
     required this.phone,
+    required this.order,
   });
 
   factory UserModel.fromDocument(DocumentSnapshot doc) {
     return UserModel(
-      uid: doc['uid'],
-      name: doc['name'],
-      email: doc['email'],
-      password: doc['password'],
-      phone: doc['phone_number'],
-    );
+        uid: doc['uid'],
+        name: doc['name'],
+        email: doc['email'],
+        password: doc['password'],
+        phone: doc['phone_number'],
+        order: doc['order']);
   }
 }
 

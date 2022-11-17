@@ -99,12 +99,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       textColor: Colors.white,
                       onPressed: () {
                         signupAuthProvider.signupValidation(
-                            name: _usernameController,
-                            email: _emailController,
-                            password: _passwordController,
-                            confirmPass: _confirmPasswordController,
-                            phone: _phonenumberController,
-                            context: context);
+                          name: _usernameController,
+                          email: _emailController,
+                          password: _passwordController,
+                          confirmPass: _confirmPasswordController,
+                          phone: _phonenumberController,
+                          context: context,
+                        );
                       },
 
                       // ORIGINAL

@@ -1,21 +1,44 @@
 import 'package:firebase_auth101/constant/constants.dart';
+import 'package:firebase_auth101/widgets/custom_toggle_button.dart';
 import 'package:firebase_auth101/widgets/customized_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
+import '../../providers/order_provider.dart';
 import '../../widgets/custom_textfield.dart';
+import '../../widgets/customized_button.dart';
 
 class PickUpRequest extends StatelessWidget {
   PickUpRequest({super.key});
 
   final TextEditingController _pincode_Controller = TextEditingController();
-  final TextEditingController _AddressLine_1_Controller =
-      TextEditingController();
-  final TextEditingController _AddressLine_2_Controller =
-      TextEditingController();
+  final TextEditingController _address_Controller = TextEditingController();
+
+  final List<String> items = [
+    'Newspaper',
+    'Books',
+    'CardBoard',
+    'Monitor',
+    'Telecom Equipment',
+    'Solar Panels',
+    'Cooling Equipments',
+    'Vending Machine',
+    'Miscellaneous',
+    'Hard Plastic',
+    'Soft Plastic',
+    'Plastic Fiber',
+    'Steel',
+    'Tin',
+    'Iron',
+    'Copper',
+    'Aluminium',
+  ];
+  final List<String> order = [];
 
   @override
   Widget build(BuildContext context) {
+    OrderProvider orderprovider = Provider.of<OrderProvider>(context);
     return SafeArea(
       child: Scaffold(
           body: SingleChildScrollView(
@@ -57,28 +80,69 @@ class PickUpRequest extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 30),
+
+              // Pincode Title
               const Text(
                 'Pincode',
                 style: TextStyle(fontSize: 20),
               ),
               const SizedBox(height: 10),
+              // Pincode Text Field
               CustomTextField(
                 myController: _pincode_Controller,
                 hintText: 'Enter valid Pincode',
                 inputType: TextInputType.number,
               ),
               const SizedBox(height: 20),
+
+              // Address Title
               const Text(
                 'Address',
                 style: TextStyle(fontSize: 20),
               ),
               const SizedBox(height: 10),
+
+              // Address Text Field
               CustomTextField(
-                myController: _pincode_Controller,
+                myController: _address_Controller,
                 hintText: 'Enter your Address',
                 inputType: TextInputType.streetAddress,
               ),
               const SizedBox(height: 20),
+
+              const Text(
+                'Select Items',
+                style: TextStyle(fontSize: 20),
+              ),
+              const SizedBox(height: 20),
+
+              Wrap(
+                children: items
+                    .map((e) => CustomToggleButton(order: order, name: e))
+                    .toList(),
+              ),
+              const SizedBox(
+                height: 40,
+              ),
+              OrderProvider.loading
+                  ? const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : Center(
+                      child: CustomizedButton(
+                        buttonText: "Request Pickup",
+                        buttonColor: Colors.green[800],
+                        textColor: Colors.white,
+                        onPressed: () {
+                          orderprovider.addOrder(
+                            pincode: _pincode_Controller,
+                            address: _address_Controller,
+                            items: order,
+                            context: context,
+                          );
+                        },
+                      ),
+                    ),
             ],
           ),
         ),

@@ -17,14 +17,14 @@ class _CheckPincodeState extends State<CheckPincode> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    FillList(pincodes);
+    fillList(pincodes);
   }
 
   @override
   Widget build(BuildContext context) {
     List<String> pincodes = [];
 
-    FillList(pincodes);
+    fillList(pincodes);
     return AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       // TextField to Enter Pincode
@@ -130,22 +130,9 @@ class _CheckPincodeState extends State<CheckPincode> {
   }
 }
 
-void FillList(pincodes) async {
+void fillList(pincodes) async {
   var doc = await FirebaseFirestore.instance.collection('pincode').get();
   for (int i = 0; i < doc.docs.length; i++) {
     pincodes.add(doc.docs[i].data()['pincode']);
-  }
-}
-
-Future<bool> checkAvailability(_controller) async {
-  final QuerySnapshot result = await FirebaseFirestore.instance
-      .collection('pincode')
-      .where('pincode', isEqualTo: _controller.text)
-      .get();
-  final List<DocumentSnapshot> documents = result.docs;
-  if (documents.isEmpty) {
-    return Future<bool>.value(true);
-  } else {
-    return Future<bool>.value(false);
   }
 }

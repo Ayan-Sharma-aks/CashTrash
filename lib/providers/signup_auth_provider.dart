@@ -101,6 +101,7 @@ class SignUpAuthProvider with ChangeNotifier {
             'email': email.text,
             'password': password.text,
             'phone_number': phone.text,
+            'order': {},
           },
         ).then((value) {
           loading = false;
@@ -108,6 +109,8 @@ class SignUpAuthProvider with ChangeNotifier {
           Navigator.pushReplacementNamed(context, '/login-page');
         });
       } on FirebaseAuthException catch (e) {
+        loading = false;
+        notifyListeners();
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(e.code)));
       }
