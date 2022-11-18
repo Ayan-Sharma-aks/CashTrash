@@ -21,7 +21,7 @@ class _DashboardState extends State<Dashboard> {
   List<Widget> dashboardScreens = [
     const HomeScreen(),
     const PriceList(),
-    CheckPincode(),
+    const CheckPincode(),
     const PickUpHistory(),
   ];
 
@@ -39,7 +39,7 @@ class _DashboardState extends State<Dashboard> {
         backgroundColor: Colors.green,
         title: Text(titles[_currentIndex]),
       ),
-      drawer: MyDrawer(),
+      drawer: const MyDrawer(),
       body: dashboardScreens[_currentIndex],
       // body: Check(
       //   currentindex: _currentIndex,

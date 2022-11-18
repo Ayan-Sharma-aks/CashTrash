@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -8,6 +9,7 @@ class OrderProvider extends ChangeNotifier {
   void addOrder({
     required TextEditingController pincode,
     required TextEditingController address,
+    required TextEditingController landmark,
     required List<String> items,
     required BuildContext context,
   }) async {
@@ -29,6 +31,12 @@ class OrderProvider extends ChangeNotifier {
           content: Text('Address field is Empty'),
         ),
       );
+    } else if (landmark.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please enter nearby landmark'),
+        ),
+      );
     } else if (items.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -39,13 +47,37 @@ class OrderProvider extends ChangeNotifier {
       try {
         loading = true;
         notifyListeners();
-        FirebaseFirestore.instance.collection('order').doc().set(
-          {
-            'pincode': pincode.text,
-            'address': address.text,
-            'order': items,
-          },
-        ).then((value) {
+
+        final DateTime now = DateTime.now();
+        final DateFormat formatter = DateFormat('dd-MM-yyyy');
+        final String dateNow = formatter.format(now);
+        String timeNow = DateFormat.Hms().format(now);
+
+        final userId = FirebaseAuth.instance.currentUser!.uid;
+        final order = FirebaseFirestore.instance.collection('order').doc();
+        final data = {
+          'uid': userId,
+          'orderId': order.id,
+          'pincode': pincode.text,
+          'address': address.text,
+          'landmark': landmark.text,
+          'order': items,
+          'date': dateNow,
+          'time': timeNow,
+          'status': 'pending'
+        };
+
+        order.set(data);
+
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(userId)
+            .collection('orders')
+            .doc()
+            .set(
+              (data),
+            )
+            .then((value) {
           loading = false;
           notifyListeners();
           showModalBottomSheet(

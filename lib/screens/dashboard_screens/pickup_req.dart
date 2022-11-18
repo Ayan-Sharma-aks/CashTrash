@@ -1,6 +1,5 @@
 import 'package:firebase_auth101/constant/constants.dart';
 import 'package:firebase_auth101/widgets/custom_toggle_button.dart';
-import 'package:firebase_auth101/widgets/customized_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +13,7 @@ class PickUpRequest extends StatelessWidget {
 
   final TextEditingController _pincode_Controller = TextEditingController();
   final TextEditingController _address_Controller = TextEditingController();
-
+  final TextEditingController _landmark_Controller = TextEditingController();
   final List<String> items = [
     'Newspaper',
     'Books',
@@ -109,6 +108,17 @@ class PickUpRequest extends StatelessWidget {
                 inputType: TextInputType.streetAddress,
               ),
               const SizedBox(height: 20),
+              const Text(
+                'Landmark',
+                style: TextStyle(fontSize: 20),
+              ),
+              const SizedBox(height: 10),
+              CustomTextField(
+                myController: _landmark_Controller,
+                hintText: 'Enter nearby Landmark',
+                inputType: TextInputType.streetAddress,
+              ),
+              const SizedBox(height: 20),
 
               const Text(
                 'Select Items',
@@ -137,6 +147,7 @@ class PickUpRequest extends StatelessWidget {
                           orderprovider.addOrder(
                             pincode: _pincode_Controller,
                             address: _address_Controller,
+                            landmark: _landmark_Controller,
                             items: order,
                             context: context,
                           );

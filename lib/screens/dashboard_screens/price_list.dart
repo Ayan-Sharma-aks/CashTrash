@@ -51,7 +51,8 @@ class PriceList extends StatelessWidget {
                             builder: (context,
                                 AsyncSnapshot<QuerySnapshot> snapshot) {
                               if (!snapshot.hasData) {
-                                return CircularProgressIndicator();
+                                return const Center(
+                                    child: CircularProgressIndicator());
                               }
                               return ListView.builder(
                                   scrollDirection: Axis.horizontal,
