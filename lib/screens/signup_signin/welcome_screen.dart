@@ -1,5 +1,5 @@
-import 'package:firebase_auth101/widgets/customized_button.dart';
 import 'package:flutter/material.dart';
+import '../../widgets/customized_button.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
@@ -17,13 +17,6 @@ class WelcomeScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              const SizedBox(
-                height: 130,
-                width: 180,
-                // child: Image(
-                //     image: AssetImage("assets/logo.png"), fit: BoxFit.cover),
-              ),
-              const SizedBox(height: 150),
               CustomizedButton(
                 buttonText: "Login",
                 buttonColor: Colors.green.shade900,
@@ -40,7 +33,7 @@ class WelcomeScreen extends StatelessWidget {
                   Navigator.pushNamed(context, '/register-page');
                 },
               ),
-              const SizedBox(height: 40),
+
               //  const SizedBox(height: 20),
               // const Padding(
               //    padding:  EdgeInsets.all(10.0),

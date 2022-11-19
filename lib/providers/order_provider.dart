@@ -1,5 +1,9 @@
+import 'dart:io';
+
+import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,6 +15,7 @@ class OrderProvider extends ChangeNotifier {
     required TextEditingController address,
     required TextEditingController landmark,
     required List<String> items,
+    required XFile? image,
     required BuildContext context,
   }) async {
     if (pincode.text.isEmpty) {
@@ -43,6 +48,12 @@ class OrderProvider extends ChangeNotifier {
           content: Text('Please select items for pickup'),
         ),
       );
+    } else if (image == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please Select an Image'),
+        ),
+      );
     } else {
       try {
         loading = true;
@@ -55,9 +66,23 @@ class OrderProvider extends ChangeNotifier {
 
         final userId = FirebaseAuth.instance.currentUser!.uid;
         final order = FirebaseFirestore.instance.collection('order').doc();
+
+        Reference referenceRoot = FirebaseStorage.instance.ref();
+        Reference referenceDirImages = referenceRoot.child('images');
+        Reference referenceImageToUpload = referenceDirImages.child(order.id);
+
+        String url = '';
+        try {
+          await referenceImageToUpload.putFile(File(image.path));
+          url = await referenceImageToUpload.getDownloadURL();
+        } catch (e) {
+          print(e.toString());
+        }
+
         final data = {
           'uid': userId,
           'orderId': order.id,
+          'image': url,
           'pincode': pincode.text,
           'address': address.text,
           'landmark': landmark.text,
@@ -67,13 +92,13 @@ class OrderProvider extends ChangeNotifier {
           'status': 'pending'
         };
 
-        order.set(data);
+        FirebaseFirestore.instance.collection('order').doc(order.id).set(data);
 
         FirebaseFirestore.instance
             .collection('users')
             .doc(userId)
             .collection('orders')
-            .doc()
+            .doc(order.id)
             .set(
               (data),
             )

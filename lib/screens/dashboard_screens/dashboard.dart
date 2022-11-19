@@ -1,12 +1,10 @@
-import 'package:firebase_auth101/widgets/check_pincode.dart';
 import 'package:flutter/material.dart';
 
 import './history.dart';
-import './pickup_req.dart';
 import './homescreen.dart';
 import './price_list.dart';
-
 import '../../widgets/drawer.dart';
+import '../../widgets/check_pincode.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -41,10 +39,6 @@ class _DashboardState extends State<Dashboard> {
       ),
       drawer: const MyDrawer(),
       body: dashboardScreens[_currentIndex],
-      // body: Check(
-      //   currentindex: _currentIndex,
-      //   dashboardscreens: dashboardScreens,
-      // ),
       bottomNavigationBar: BottomNavigationBar(
         selectedFontSize: 16,
         iconSize: 26,
@@ -86,25 +80,3 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 }
-
-// class Check extends StatefulWidget {
-//   int currentindex;
-//   List<Widget> dashboardscreens;
-
-//   Check(
-//       {required this.currentindex, required this.dashboardscreens, super.key});
-
-//   @override
-//   State<Check> createState() => _CheckState();
-// }
-
-// class _CheckState extends State<Check> {
-//   @override
-//   Widget build(BuildContext context) {
-//     if (widget.currentindex != 2) {
-//       return PickUpRequest();
-//     } else {
-//       return widget.dashboardscreens.elementAt(widget.currentindex);
-//     }
-//   }
-// }

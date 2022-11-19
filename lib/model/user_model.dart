@@ -3,14 +3,14 @@ import 'dart:collection';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class UserModel {
+class UserMode {
   final String uid;
   final String name;
   final String email;
   final String password;
   final String phone;
   final HashMap order;
-  UserModel({
+  UserMode({
     required this.uid,
     required this.name,
     required this.email,
@@ -19,8 +19,8 @@ class UserModel {
     required this.order,
   });
 
-  factory UserModel.fromDocument(DocumentSnapshot doc) {
-    return UserModel(
+  factory UserMode.fromDocument(DocumentSnapshot doc) {
+    return UserMode(
         uid: doc['uid'],
         name: doc['name'],
         email: doc['email'],
@@ -30,7 +30,7 @@ class UserModel {
   }
 }
 
-late UserModel userModel;
+late UserMode userModel;
 
 Future getCurrentUserData() async {
   await FirebaseFirestore.instance
@@ -40,7 +40,7 @@ Future getCurrentUserData() async {
       .then(
     (DocumentSnapshot doc) {
       if (doc.exists) {
-        userModel = UserModel.fromDocument(doc);
+        userModel = UserMode.fromDocument(doc);
       } else {
         print('Document does not exist');
       }

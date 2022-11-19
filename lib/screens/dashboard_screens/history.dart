@@ -1,8 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_auth101/widgets/order_history_card.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
+
+import '../../widgets/order_history_card.dart';
 
 class PickUpHistory extends StatefulWidget {
   const PickUpHistory({super.key});
@@ -29,11 +29,8 @@ class _PickUpHistoryState extends State<PickUpHistory> {
                 itemBuilder: (context, index) {
                   DocumentSnapshot orderData = snapshot.data!.docs[index];
                   return OrderHistoryCard(
-                      orderData: orderData,
-                      orderId: orderData['orderId'],
-                      date: orderData['date'],
-                      items: orderData['order'],
-                      status: orderData['status']);
+                    orderData: orderData,
+                  );
                 },
               )
             : const Center(child: CircularProgressIndicator());

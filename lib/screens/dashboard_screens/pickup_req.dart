@@ -1,12 +1,18 @@
-import 'package:firebase_auth101/constant/constants.dart';
-import 'package:firebase_auth101/widgets/custom_toggle_button.dart';
+import 'dart:io';
+
+import 'package:dotted_border/dotted_border.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/order_provider.dart';
 import '../../widgets/custom_textfield.dart';
 import '../../widgets/customized_button.dart';
+import '../../widgets/custom_toggle_button.dart';
+
+XFile? _image;
 
 class PickUpRequest extends StatelessWidget {
   PickUpRequest({super.key});
@@ -38,6 +44,7 @@ class PickUpRequest extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     OrderProvider orderprovider = Provider.of<OrderProvider>(context);
+
     return SafeArea(
       child: Scaffold(
           body: SingleChildScrollView(
@@ -46,39 +53,36 @@ class PickUpRequest extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  Container(
-                    height: 50,
-                    width: 50,
-                    decoration: BoxDecoration(
-                      border:
-                          Border.all(color: Colors.green.shade900, width: 1),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: IconButton(
-                        icon: const Icon(Icons.arrow_back_ios_sharp),
-                        onPressed: () {
-                          Navigator.pop(context);
-                          // Navigator.of(context).popUntil((route) => route.isFirst);
-                          // Navigator.popAndPushNamed(context, '/dashboard');
-                        }),
-                  ),
-                  SizedBox(
-                    width: Constants.width(context, 12),
-                  ),
-                  Text(
-                    'Request PickUp',
-                    style: GoogleFonts.lato(
-                      textStyle: const TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ),
-                ],
+              Container(
+                height: 50,
+                width: 50,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.green.shade900, width: 1),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: IconButton(
+                    icon: const Icon(Icons.arrow_back_ios_sharp),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    }),
               ),
-              const SizedBox(height: 30),
+              const SizedBox(
+                height: 16,
+              ),
+              Center(
+                child: Text(
+                  'Request PickUp',
+                  style: GoogleFonts.lato(
+                    textStyle: const TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 24,
+              ),
 
               // Pincode Title
               const Text(
@@ -134,6 +138,39 @@ class PickUpRequest extends StatelessWidget {
               const SizedBox(
                 height: 40,
               ),
+              Center(
+                child: DottedBorder(
+                  padding: const EdgeInsets.all(16),
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.3,
+                    width: MediaQuery.of(context).size.width * 0.7,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        // Container(
+                        //   height: 100,
+                        //   width: 100,
+                        //   color: Colors.amber,
+                        //   decoration: BoxDecoration(
+                        //       image: DecorationImage(
+                        //           image: NetworkImage(image.path))),
+                        // ),
+                        ElevatedButton.icon(
+                            onPressed: () {
+                              _pickimage();
+                              print('${_image?.path}');
+                            },
+                            icon: const Icon(Icons.photo_camera),
+                            label: const Text('Choose Image'))
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 40,
+              ),
+              // Order Button
               OrderProvider.loading
                   ? const Center(
                       child: CircularProgressIndicator(),
@@ -144,10 +181,20 @@ class PickUpRequest extends StatelessWidget {
                         buttonColor: Colors.green[800],
                         textColor: Colors.white,
                         onPressed: () {
+                          // String uniqueFileName =
+                          //     DateTime.now().microsecondsSinceEpoch.toString();
+                          // Reference referenceRoot =
+                          //     FirebaseStorage.instance.ref();
+                          // Reference referenceDirImages =
+                          //     referenceRoot.child('images');
+                          // Reference referenceImageToUpload =
+                          //     referenceDirImages.child(uniqueFileName);
+                          // referenceImageToUpload.putFile(File(image.path));
                           orderprovider.addOrder(
                             pincode: _pincode_Controller,
                             address: _address_Controller,
                             landmark: _landmark_Controller,
+                            image: _image,
                             items: order,
                             context: context,
                           );
@@ -160,4 +207,10 @@ class PickUpRequest extends StatelessWidget {
       )),
     );
   }
+}
+
+_pickimage() async {
+  ImagePicker imagePicker = ImagePicker();
+  _image =
+      await imagePicker.pickImage(source: ImageSource.camera, imageQuality: 80);
 }

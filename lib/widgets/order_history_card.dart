@@ -5,16 +5,9 @@ import 'package:flutter/material.dart';
 
 class OrderHistoryCard extends StatelessWidget {
   final DocumentSnapshot<Object?> orderData;
-  final String orderId;
-  final String date;
-  final List items;
-  final String status;
+
   const OrderHistoryCard({
     required this.orderData,
-    required this.orderId,
-    required this.date,
-    required this.items,
-    required this.status,
     Key? key,
   }) : super(key: key);
 
@@ -36,11 +29,16 @@ class OrderHistoryCard extends StatelessWidget {
                     children: [
                       Center(
                         child: Container(
-                          height: 160,
-                          width: 160,
+                          height: 200,
+                          width: 200,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(16),
-                              color: Colors.blue),
+                            image: DecorationImage(
+                                image: NetworkImage(
+                                  orderData['image'],
+                                ),
+                                fit: BoxFit.fill),
+                            borderRadius: BorderRadius.circular(16),
+                          ),
                         ),
                       ),
                       const SizedBox(
@@ -67,8 +65,8 @@ class OrderHistoryCard extends StatelessWidget {
                       const SizedBox(
                         height: 12,
                       ),
-                      // Items Requested for Pickup
 
+                      // Items Requested for Pickup
                       const Text(
                         'Items:',
                         style: TextStyle(fontWeight: FontWeight.bold),
@@ -124,8 +122,13 @@ class OrderHistoryCard extends StatelessWidget {
                 height: 100,
                 width: 100,
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    color: Colors.blue),
+                  image: DecorationImage(
+                      image: NetworkImage(
+                        orderData['image'],
+                      ),
+                      fit: BoxFit.fill),
+                  borderRadius: BorderRadius.circular(16),
+                ),
               ),
               const SizedBox(
                 width: 20,
@@ -141,14 +144,15 @@ class OrderHistoryCard extends StatelessWidget {
                     const SizedBox(
                       height: 8,
                     ),
+                    Text('Request Time: ${orderData['time']}'),
+                    const SizedBox(
+                      height: 8,
+                    ),
                     Text('Item count: ${orderData['order'].length}'),
                     const SizedBox(
-                      height: 16,
+                      height: 8,
                     ),
                     Text('Status: ${orderData['status']}'),
-                    // const SizedBox(
-                    //   height: 16,
-                    // ),
                   ],
                 ),
               )

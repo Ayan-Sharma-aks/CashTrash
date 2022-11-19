@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth101/widgets/item_card.dart';
 import 'package:flutter/material.dart';
+
+import '../../widgets/item_card.dart';
 
 class PriceList extends StatelessWidget {
   const PriceList({super.key});
@@ -14,7 +15,7 @@ class PriceList extends StatelessWidget {
           stream: FirebaseFirestore.instance.collection('category').snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
             if (!streamSnapshot.hasData) {
-              return const CircularProgressIndicator();
+              return const Center(child: CircularProgressIndicator());
             }
             return ListView.builder(
                 physics: const BouncingScrollPhysics(),

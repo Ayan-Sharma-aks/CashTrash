@@ -4,6 +4,8 @@ import 'package:firebase_auth101/providers/order_provider.dart';
 import 'package:firebase_auth101/providers/signup_auth_provider.dart';
 import 'package:firebase_auth101/screens/dashboard_screens/dashboard.dart';
 import 'package:firebase_auth101/screens/dashboard_screens/pickup_req.dart';
+import 'package:firebase_auth101/screens/signup_signin/forgot_passwor.dart';
+
 import 'package:firebase_auth101/screens/signup_signin/login_screen.dart';
 import 'package:firebase_auth101/screens/signup_signin/signup_screen.dart';
 import 'package:firebase_auth101/screens/signup_signin/welcome_screen.dart';
@@ -51,6 +53,7 @@ class MyApp extends StatelessWidget {
           '/register-page': (context) => const SignUpScreen(),
           '/dashboard': (context) => const Dashboard(),
           '/pickup-page': (context) => PickUpRequest(),
+          '/forgot-password-page': (context) => const ForgotPassword(),
         },
         home: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),
