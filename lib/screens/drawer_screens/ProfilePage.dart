@@ -18,7 +18,7 @@ class _ProfilePageState extends State<ProfilePage> {
     //SizeConfig().init(context);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green[900],
+        backgroundColor: Colors.green,
         //leading: SizedBox(),
         centerTitle: true,
         title: Text('Profile'),
@@ -44,7 +44,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   clipper: CustomShape(),
                   child: Container(
                     height: 190,
-                    color: Colors.green[900],
+                    color: Colors.green,
                   ),
                 ),
                 Center(
@@ -70,14 +70,14 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       Text('Ayan Sharma',style: TextStyle(
                         fontSize: 22,
-                        color: Colors.green[30],
+                        color: Colors.black,
 
                       ),),
                       SizedBox(height: 5,),
                       Text('ayansharma.davv@gmail.com',
                         style: TextStyle(
                           fontWeight: FontWeight.w400,
-                          color: Colors.green[300],
+                          color: Colors.green,
                         ),
                       )
                     ],

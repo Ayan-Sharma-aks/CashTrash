@@ -20,6 +20,7 @@ class PickUpRequest extends StatelessWidget {
   final TextEditingController _pincode_Controller = TextEditingController();
   final TextEditingController _address_Controller = TextEditingController();
   final TextEditingController _landmark_Controller = TextEditingController();
+  final TextEditingController _phone_Controller = TextEditingController();
   final List<String> items = [
     'Newspaper',
     'Books',
@@ -122,6 +123,16 @@ class PickUpRequest extends StatelessWidget {
                 hintText: 'Enter nearby Landmark',
                 inputType: TextInputType.streetAddress,
               ),
+              const Text(
+                'Phone',
+                style: TextStyle(fontSize: 20),
+              ),
+              const SizedBox(height: 10),
+              CustomTextField(
+                myController: _phone_Controller,
+                hintText: 'Enter Phone Number to contact',
+                inputType: TextInputType.streetAddress,
+              ),
               const SizedBox(height: 20),
 
               const Text(
@@ -147,14 +158,14 @@ class PickUpRequest extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        // Container(
-                        //   height: 100,
-                        //   width: 100,
-                        //   color: Colors.amber,
-                        //   decoration: BoxDecoration(
-                        //       image: DecorationImage(
-                        //           image: NetworkImage(image.path))),
-                        // ),
+                        Container(
+                          height: 100,
+                          width: 100,
+                          color: Colors.amber,
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: NetworkImage(_image!.path))),
+                        ),
                         ElevatedButton.icon(
                             onPressed: () {
                               _pickimage();
@@ -182,18 +193,19 @@ class PickUpRequest extends StatelessWidget {
                         textColor: Colors.white,
                         onPressed: () {
                           // String uniqueFileName =
-                          //     DateTime.now().microsecondsSinceEpoch.toString();
-                          // Reference referenceRoot =
-                          //     FirebaseStorage.instance.ref();
-                          // Reference referenceDirImages =
-                          //     referenceRoot.child('images');
-                          // Reference referenceImageToUpload =
-                          //     referenceDirImages.child(uniqueFileName);
-                          // referenceImageToUpload.putFile(File(image.path));
+                          //                           //     DateTime.now().microsecondsSinceEpoch.toString();
+                          //                           // Reference referenceRoot =
+                          //                           //     FirebaseStorage.instance.ref();
+                          //                           // Reference referenceDirImages =
+                          //                           //     referenceRoot.child('images');
+                          //                           // Reference referenceImageToUpload =
+                          //                           //     referenceDirImages.child(uniqueFileName);
+                          //                           // referenceImageToUpload.putFile(File(image.path));
                           orderprovider.addOrder(
                             pincode: _pincode_Controller,
                             address: _address_Controller,
                             landmark: _landmark_Controller,
+                            phone: _phone_Controller,
                             image: _image,
                             items: order,
                             context: context,
