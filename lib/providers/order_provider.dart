@@ -109,6 +109,7 @@ class OrderProvider extends ChangeNotifier {
           'address': address.text,
           'landmark': landmark.text,
           'phone': phone.text,
+          'pickupDate': pickupDate.text,
           'order': items,
           'date': dateNow,
           'time': timeNow,
