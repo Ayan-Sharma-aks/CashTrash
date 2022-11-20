@@ -1,7 +1,4 @@
-import 'dart:io';
-
 import 'package:dotted_border/dotted_border.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
@@ -21,6 +18,7 @@ class PickUpRequest extends StatelessWidget {
   final TextEditingController _address_Controller = TextEditingController();
   final TextEditingController _landmark_Controller = TextEditingController();
   final TextEditingController _phone_Controller = TextEditingController();
+  final TextEditingController _date_Controller = TextEditingController();
   final List<String> items = [
     'Newspaper',
     'Books',
@@ -123,6 +121,7 @@ class PickUpRequest extends StatelessWidget {
                 hintText: 'Enter nearby Landmark',
                 inputType: TextInputType.streetAddress,
               ),
+              const SizedBox(height: 20),
               const Text(
                 'Phone',
                 style: TextStyle(fontSize: 20),
@@ -132,6 +131,19 @@ class PickUpRequest extends StatelessWidget {
                 myController: _phone_Controller,
                 hintText: 'Enter Phone Number to contact',
                 inputType: TextInputType.streetAddress,
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                'Date',
+                style: TextStyle(fontSize: 20),
+              ),
+              const SizedBox(height: 10),
+              CustomTextField(
+                myController: _date_Controller,
+                hintText: 'Enter Date ',
+                icon: const Icon(Icons.date_range),
+                inputType: TextInputType.streetAddress,
+                onTap: true,
               ),
               const SizedBox(height: 20),
 
@@ -153,23 +165,15 @@ class PickUpRequest extends StatelessWidget {
                 child: DottedBorder(
                   padding: const EdgeInsets.all(16),
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.3,
+                    height: MediaQuery.of(context).size.height * 0.1,
                     width: MediaQuery.of(context).size.width * 0.7,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Container(
-                          height: 100,
-                          width: 100,
-                          color: Colors.amber,
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: NetworkImage(_image!.path))),
-                        ),
                         ElevatedButton.icon(
                             onPressed: () {
                               _pickimage();
-                              print('${_image?.path}');
+                              
                             },
                             icon: const Icon(Icons.photo_camera),
                             label: const Text('Choose Image'))
@@ -192,20 +196,12 @@ class PickUpRequest extends StatelessWidget {
                         buttonColor: Colors.green[800],
                         textColor: Colors.white,
                         onPressed: () {
-                          // String uniqueFileName =
-                          //                           //     DateTime.now().microsecondsSinceEpoch.toString();
-                          //                           // Reference referenceRoot =
-                          //                           //     FirebaseStorage.instance.ref();
-                          //                           // Reference referenceDirImages =
-                          //                           //     referenceRoot.child('images');
-                          //                           // Reference referenceImageToUpload =
-                          //                           //     referenceDirImages.child(uniqueFileName);
-                          //                           // referenceImageToUpload.putFile(File(image.path));
                           orderprovider.addOrder(
                             pincode: _pincode_Controller,
                             address: _address_Controller,
                             landmark: _landmark_Controller,
                             phone: _phone_Controller,
+                            pickupDate: _date_Controller,
                             image: _image,
                             items: order,
                             context: context,

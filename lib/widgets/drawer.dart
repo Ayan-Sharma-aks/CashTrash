@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth101/model/user_model.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-import '../screens/drawer_screens/ProfilePage.dart';
+UserMode? user;
 
 class MyDrawer extends StatefulWidget {
   const MyDrawer({super.key});
@@ -12,92 +14,94 @@ class MyDrawer extends StatefulWidget {
 }
 
 class _MyDrawerState extends State<MyDrawer> {
+  Map userData = {};
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    super.initState();
+    getData();
+  }
+
+  getData() async {
+    var userSnap = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
+
+    setState(() {
+      userData = userSnap.data()!;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final FirebaseAuth auth = FirebaseAuth.instance;
     return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          UserAccountsDrawerHeader(
-            decoration: BoxDecoration(
-              color: Colors.green,
-              image: DecorationImage(
-                image: AssetImage('asset/bg_ct.jpg'),
-                fit: BoxFit.fill,
-              ),
-            ),
-            accountName: Text(
-              'Ayan Sharma',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 15,
-              ),
-            ),
-            accountEmail: Text(
-              'ayansharma.davv@gmail.com',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 15,
-              ),
-            ),
-            currentAccountPicture: Image.asset('p_photo.png'),
-          ),
-          // SizedBox(
-          //   height: 30,
-          // ),
-          // Icon(Icons.person),
-          // Padding(
-          //   padding: const EdgeInsets.all(8.0),
-          //   child: Text('Ayan Sharma',textAlign: TextAlign.center,style: TextStyle(
-          //     color: Colors.green[900],
-          //     fontSize: 18,
-          //   ),),
-          // ),
-          // SizedBox(
-          //   height: 30,
-          // ),
-          // Icon(Icons.email),
-          // Padding(
-          //   padding: const EdgeInsets.all(8.0),
-          //   child: Text('ayansharma.davv@gmail.com',textAlign: TextAlign.center,style: TextStyle(
-          //     color: Colors.green[900],
-          //     fontSize: 18,
-          //   ),),
-          // ),
-          // SizedBox(
-          //   height: 30,
-          // ),
-
-          ListTile(
-            leading: const Icon(Icons.person),
-            trailing: Icon(Icons.arrow_forward),
-            title: const Text('Profile'),
-            onTap: () => {Navigator.pushNamed(context, '/profile-page')},
-          ),
-          ListTile(
-            leading: const Icon(Icons.info_outline_rounded),
-            trailing: Icon(Icons.arrow_forward),
-            title: const Text('About Us'),
-            onTap: () => {Navigator.pushNamed(context, '/about-us')},
-          ),
-          ListTile(
-            leading: const Icon(Icons.border_color),
-            trailing: Icon(Icons.arrow_forward),
-            title: const Text('Feedback'),
-            onTap: () => {Navigator.of(context).pop()},
-          ),
-          ListTile(
-            leading: const Icon(Icons.exit_to_app),
-            //trailing: Icon(Icons.arrow_forward),
-            title: const Text('Logout'),
-            onTap: () async {
-              await auth.signOut().then((value) =>
-                  Navigator.of(context).popUntil((route) => route.isFirst));
-            },
-          ),
-        ],
-      ),
-    );
+        child: userData.isNotEmpty
+            ? ListView(
+                padding: EdgeInsets.zero,
+                children: <Widget>[
+                  UserAccountsDrawerHeader(
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: NetworkImage(
+                            'https://i.postimg.cc/7Zj1H8R0/ct-drawer.png'),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    accountName: Text(
+                      userData['name'],
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                      ),
+                    ),
+                    accountEmail: Text(
+                      userData['email'],
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                      ),
+                    ),
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.info),
+                    trailing: const Icon(Icons.arrow_forward),
+                    title: const Text('About Us'),
+                    onTap: () => {
+                      showAboutDialog(
+                        context: context,
+                        applicationIcon: const FlutterLogo(),
+                        applicationName: 'About Us',
+                        applicationVersion: '0.0.1',
+                        applicationLegalese:
+                            'We, at CashTrash, connect people to professional recyclers and enable them to sell their household junk and get paid back for its value.',
+                      ),
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.border_color),
+                    trailing: const Icon(Icons.arrow_forward),
+                    title: const Text('Feedback'),
+                    onTap: () async {
+                      const url = 'mailto:yaaash123@gmail.com';
+                      if (await canLaunchUrl(Uri.parse(url))) {
+                        await launchUrl(Uri.parse(url));
+                      }
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.exit_to_app),
+                    trailing: const Icon(Icons.arrow_forward),
+                    title: const Text('Logout'),
+                    onTap: () async {
+                      await auth.signOut().then((value) => Navigator.of(context)
+                          .popUntil((route) => route.isFirst));
+                    },
+                  ),
+                ],
+              )
+            : const Center(child: CircularProgressIndicator()));
   }
 }

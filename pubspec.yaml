@@ -50,6 +50,9 @@ dependencies:
   image_picker: ^0.8.6
   firebase_storage: ^11.0.6
   custom_text: ^0.5.1
+  url_launcher: ^6.1.6
+  date_format: ^2.0.7
+  intl: ^0.17.0
   
   
 

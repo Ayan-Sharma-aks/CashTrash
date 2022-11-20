@@ -15,6 +15,7 @@ class OrderProvider extends ChangeNotifier {
     required TextEditingController address,
     required TextEditingController landmark,
     required TextEditingController phone,
+    required TextEditingController pickupDate,
     required List<String> items,
     required XFile? image,
     required BuildContext context,
@@ -49,19 +50,25 @@ class OrderProvider extends ChangeNotifier {
           content: Text('Please select items for pickup'),
         ),
       );
-    }else if (phone.text.isEmpty) {
+    } else if (phone.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Please enter phone number'),
         ),
       );
-    } else if (phone.text.length != 10 ) {
+    } else if (phone.text.length != 10) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Please enter valid phone number'),
         ),
       );
-    }  else if (image == null) {
+    } else if (pickupDate.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please enter valid date'),
+        ),
+      );
+    } else if (image == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Please Select an Image'),
@@ -86,7 +93,9 @@ class OrderProvider extends ChangeNotifier {
 
         String url = '';
         try {
-          await referenceImageToUpload.putFile(File(image.path),);
+          await referenceImageToUpload.putFile(
+            File(image.path),
+          );
           url = await referenceImageToUpload.getDownloadURL();
         } catch (e) {
           print(e.toString());
