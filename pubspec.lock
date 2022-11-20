@@ -127,6 +127,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.5"
+  custom_text:
+    dependency: "direct main"
+    description:
+      name: custom_text
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.5.1"
   dotted_border:
     dependency: "direct main"
     description:
@@ -560,6 +567,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.4.12"
+  text_parser:
+    dependency: transitive
+    description:
+      name: text_parser
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.3"
   typed_data:
     dependency: transitive
     description:

@@ -49,6 +49,7 @@ dependencies:
   dotted_border: ^2.0.0+3
   image_picker: ^0.8.6
   firebase_storage: ^11.0.6
+  custom_text: ^0.5.1
   
   
 
