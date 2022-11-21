@@ -1,0 +1,7 @@
+@startuml CashTrash
+actor User 
+
+
+User -> Server: request
+
+Server --> User: response
