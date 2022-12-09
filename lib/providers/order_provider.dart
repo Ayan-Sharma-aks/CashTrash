@@ -16,6 +16,7 @@ class OrderProvider extends ChangeNotifier {
     required TextEditingController landmark,
     required TextEditingController phone,
     required TextEditingController pickupDate,
+    required String timeSlot,
     required List<String> items,
     required XFile? image,
     required BuildContext context,
@@ -68,6 +69,12 @@ class OrderProvider extends ChangeNotifier {
           content: Text('Please enter valid date'),
         ),
       );
+    } else if (timeSlot == '') {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please select a time slot'),
+        ),
+      );
     } else if (image == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -110,10 +117,12 @@ class OrderProvider extends ChangeNotifier {
           'landmark': landmark.text,
           'phone': phone.text,
           'pickupDate': pickupDate.text,
+          'timeSlot': timeSlot,
           'order': items,
           'date': dateNow,
           'time': timeNow,
-          'status': 'pending'
+          'status': 'pending',
+          'reasonRejection': '',
         };
 
         FirebaseFirestore.instance.collection('order').doc(order.id).set(data);

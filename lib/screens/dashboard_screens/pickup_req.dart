@@ -8,8 +8,10 @@ import '../../providers/order_provider.dart';
 import '../../widgets/custom_textfield.dart';
 import '../../widgets/customized_button.dart';
 import '../../widgets/custom_toggle_button.dart';
+import '../../widgets/time_slot_select.dart';
 
 XFile? _image;
+String? selectedTimeSlot;
 
 class PickUpRequest extends StatelessWidget {
   PickUpRequest({super.key});
@@ -146,6 +148,14 @@ class PickUpRequest extends StatelessWidget {
                 onTap: true,
               ),
               const SizedBox(height: 20),
+              const Text(
+                'Time Slot',
+                style: TextStyle(fontSize: 20),
+              ),
+              const SizedBox(height: 10),
+              TimeSlotWidget(),
+
+              const SizedBox(height: 20),
 
               const Text(
                 'Select Items',
@@ -173,7 +183,6 @@ class PickUpRequest extends StatelessWidget {
                         ElevatedButton.icon(
                             onPressed: () {
                               _pickimage();
-                              
                             },
                             icon: const Icon(Icons.photo_camera),
                             label: const Text('Choose Image'))
@@ -202,6 +211,7 @@ class PickUpRequest extends StatelessWidget {
                             landmark: _landmark_Controller,
                             phone: _phone_Controller,
                             pickupDate: _date_Controller,
+                            timeSlot: selectedTimeSlot!,
                             image: _image,
                             items: order,
                             context: context,
