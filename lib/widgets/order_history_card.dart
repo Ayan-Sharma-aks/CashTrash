@@ -98,6 +98,10 @@ class OrderHistoryCard extends StatelessWidget {
                                           context: context,
                                           builder: (context) {
                                             return AlertDialog(
+                                              titleTextStyle: const TextStyle(
+                                                  fontSize: 24,
+                                                  color: Colors.black),
+                                              title: const Text('Choose Date'),
                                               content: CustomTextField(
                                                 myController: _date_Controller,
                                                 hintText: 'Enter Date',
